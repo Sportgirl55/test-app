@@ -10,7 +10,6 @@ type Props = {
 };
 
 export function MatchCard({ match, favorite, onToggleFavorite }: Props) {
-  // Проверяем на null, а не на «ложность»: счёт 0:0 — это валидный счёт.
   const score = match.score !== null ? `${match.score.home} : ${match.score.away}` : '– : –';
 
   return (
@@ -41,7 +40,6 @@ const styles = StyleSheet.create({
     borderColor: '#e5e7eb',
     backgroundColor: '#fff',
   },
-  // flex: 1 + flexShrink — длинные названия («Пари Нижний Новгород») переносятся, а не ломают вёрстку.
   teams: { flex: 1, flexShrink: 1, gap: 4 },
   team: { fontSize: 16, fontWeight: '600' },
   center: { alignItems: 'center', minWidth: 110 },

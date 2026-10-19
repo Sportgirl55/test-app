@@ -31,7 +31,6 @@ export function MatchesScreen() {
   const [filter, setFilter] = useState<Filter>('all');
   const { isFavorite, toggle, favorites } = useFavorites();
 
-  // Номер запроса: если пользователь нажал «Обновить» дважды, учитываем только последний ответ.
   const requestId = useRef(0);
 
   const load = useCallback(async () => {
@@ -58,7 +57,6 @@ export function MatchesScreen() {
 
   const visible = useMemo(() => (matches ?? []).filter((m) => matchesFilter(m, filter)), [matches, filter]);
 
-  // Первая загрузка или ошибка без данных — полноэкранные состояния.
   if (matches === null) {
     return (
       <View style={styles.container}>
@@ -110,7 +108,6 @@ export function MatchesScreen() {
       <FlatList
         data={visible}
         keyExtractor={(m) => m.id}
-        // FlatList не перерисует строки, если не изменился data, — поэтому передаём favorites.
         extraData={favorites}
         renderItem={({ item }) => (
           <MatchCard match={item} favorite={isFavorite(item.id)} onToggleFavorite={() => toggle(item.id)} />
