@@ -6,15 +6,19 @@ type Props = {
   since: Date;
 };
 
+const secondsSince = (since: Date) => Math.max(0, Math.floor((Date.now() - since.getTime()) / 1000));
+
 // Подпись «Обновлено N сек назад».
 export function UpdatedAgo({ since }: Props) {
-  const [seconds, setSeconds] = useState(0);
+  const [seconds, setSeconds] = useState(() => secondsSince(since));
 
   useEffect(() => {
-    setInterval(() => {
-      setSeconds(seconds + 1);
-    }, 1000);
-  }, []);
+    // Новое значение since — сразу сбрасываем счётчик.
+    setSeconds(secondsSince(since));
+    const id = setInterval(() => setSeconds(secondsSince(since)), 1000);
+    // Без очистки интервалы накапливались бы при каждом обновлении и после размонтирования.
+    return () => clearInterval(id);
+  }, [since]);
 
   return <Text style={styles.text}>Обновлено {seconds} сек назад</Text>;
 }
